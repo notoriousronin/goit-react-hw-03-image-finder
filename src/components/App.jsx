@@ -13,7 +13,9 @@ export default class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     const prevQuery = prevProps.searchQuery;
     const newQuery = this.state.searchQuery;
+
     if (prevQuery !== newQuery) {
+      this.setState({ loading: true });
       fetch(
         `https://pixabay.com/api/?q=${newQuery}&page=1&key=30111750-62c4a73e1cd4f265a4d4cd285&image_type=photo&orientation=horizontal&per_page=12`
       )
@@ -24,7 +26,8 @@ export default class App extends Component {
           return Promise.reject(new Error(`There is no ${newQuery}`));
         })
         .then(res => this.setState({ searchQuery: res }))
-        .catch(error => this.setState({ error }));
+        .catch(error => this.setState({ error }))
+        .finally(() => this.setState({ loading: false }));
     }
   }
 
