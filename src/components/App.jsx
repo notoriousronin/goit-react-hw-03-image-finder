@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-
+import ImageGallery from './ImageGallery/ImageGallery';
 import Searchbar from './Searchbar/Searchbar';
 
 export default class App extends Component {
   state = {
     searchQuery: null,
-    loading: false,
+    images: [],
     page: 1,
     error: null,
   };
@@ -15,7 +15,6 @@ export default class App extends Component {
     const newQuery = this.state.searchQuery;
 
     if (prevQuery !== newQuery) {
-      this.setState({ loading: true });
       fetch(
         `https://pixabay.com/api/?q=${newQuery}&page=1&key=30111750-62c4a73e1cd4f265a4d4cd285&image_type=photo&orientation=horizontal&per_page=12`
       )
@@ -26,8 +25,7 @@ export default class App extends Component {
           return Promise.reject(new Error(`There is no ${newQuery}`));
         })
         .then(res => this.setState({ searchQuery: res }))
-        .catch(error => this.setState({ error }))
-        .finally(() => this.setState({ loading: false }));
+        .catch(error => this.setState({ error }));
     }
   }
 
@@ -40,6 +38,7 @@ export default class App extends Component {
     return (
       <div>
         {error && <h1>{error.message}</h1>}
+        <ImageGallery />
         <Searchbar onSubmit={this.handleFormNameSubmit} />
         {searchQuery && <div>Hello</div>}
       </div>
