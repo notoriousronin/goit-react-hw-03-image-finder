@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import Searchbar from './Searchbar/Searchbar';
+import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
+import { Loader } from './Loader/Loader';
+import { Button } from './Button/Button';
 
 export default class App extends Component {
   state = {
@@ -15,10 +17,11 @@ export default class App extends Component {
   async componentDidUpdate(prevProps, prevState) {
     const KEY = '30111750-62c4a73e1cd4f265a4d4cd285';
     const { page, request } = this.state;
-    const prevRequest = prevProps.request;
+    const prevRequest = prevState.request;
     const newRequest = this.state.request;
     const prevPage = prevState.page;
     const newPage = this.state.page;
+
     if (prevRequest !== newRequest || prevPage !== newPage) {
       try {
         this.setState({ isLoading: true });
@@ -48,6 +51,10 @@ export default class App extends Component {
     this.setState({ largeImage: { url, tags } });
   };
 
+  onLoadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  };
+
   render() {
     return (
       <div>
@@ -56,6 +63,10 @@ export default class App extends Component {
           images={this.state.images}
           onImageClick={this.onImageClick}
         />
+        {this.state.isLoading && <Loader />}
+        {this.state.images.length === this.state.page * this.perPage && (
+          <Button onLoadMore={this.state.onLoadMore} />
+        )}
       </div>
     );
   }
