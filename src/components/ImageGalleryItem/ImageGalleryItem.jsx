@@ -1,16 +1,9 @@
 import React from 'react';
 
-export default function ImageGalleryItem({
-  image: { name, webformatURL, largeImageURL },
-  onSelect,
-}) {
+export default function ImageGalleryItem({ webformatURL, tags, onImageClick }) {
   return (
-    <img
-      src={webformatURL}
-      alt={name}
-      onClick={() => {
-        onSelect(largeImageURL);
-      }}
-    />
+    <li class="gallery-item">
+      <img src={webformatURL} alt={tags} onClick={onImageClick} />
+    </li>
   );
 }

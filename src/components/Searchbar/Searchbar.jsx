@@ -1,47 +1,23 @@
-import React, { Component } from 'react';
-import Notiflix from 'notiflix';
+import React from 'react';
 
-export default class Searchbar extends Component {
-  state = {
-    searchQuery: '',
-  };
+export default function Searchbar({ onSubmit }) {
+  return (
+    <div>
+      <header className="searchbar">
+        <form onSubmit={onSubmit} className="form">
+          <button type="submit" className="button">
+            <span className="button-label">Search</span>
+          </button>
 
-  handleSubmit = e => {
-    e.preventDefault();
-    if (this.state.searchQuery.trim() === '') {
-      return Notiflix.Notify.info('Please, fill the search bar.');
-    }
-    this.props.onSubmit(this.state.searchQuery);
-    this.setState({ searchQuery: '' });
-  };
-
-  handleChange = e => {
-    this.setState({
-      searchQuery: e.currentTarget.value.toLowerCase(),
-    });
-  };
-
-  render() {
-    return (
-      <div>
-        <header className="searchbar">
-          <form onSubmit={this.handleSubmit} className="form">
-            <button type="submit" className="button">
-              <span className="button-label">Search</span>
-            </button>
-
-            <input
-              className="input"
-              type="text"
-              autoComplete="off"
-              autoFocus
-              value={this.state.searchQuery}
-              onChange={this.handleChange}
-              placeholder="Search images and photos"
-            />
-          </form>
-        </header>
-      </div>
-    );
-  }
+          <input
+            className="input"
+            type="text"
+            autoComplete="off"
+            autoFocus
+            placeholder="Search images and photos"
+          />
+        </form>
+      </header>
+    </div>
+  );
 }

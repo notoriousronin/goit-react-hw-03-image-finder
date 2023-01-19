@@ -1,20 +1,19 @@
 import React from 'react';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 
-export default function ImageGallery({ images, onSelect }) {
+export const ImageGallery = ({ images, onImageClick }) => {
   return (
-    <div>
-      {images.length > 0 && (
-        <ul>
-          {images.map(image => {
-            return (
-              <li key={image.id}>
-                <ImageGalleryItem image={image} onSelect={onSelect} />
-              </li>
-            );
-          })}
-        </ul>
-      )}
+    <div className="gallery">
+      {images.map(({ id, webformatURL, largeImageURL, tags }) => {
+        return (
+          <ImageGalleryItem
+            key={id}
+            webformatURL={webformatURL}
+            tags={tags}
+            onImageClick={() => onImageClick(largeImageURL, tags)}
+          />
+        );
+      })}
     </div>
   );
-}
+};
