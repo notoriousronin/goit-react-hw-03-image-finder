@@ -3,6 +3,7 @@ import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Loader } from './Loader/Loader';
 import { Button } from './Button/Button';
+import { ModalWindow } from './Modal/Modal';
 
 export default class App extends Component {
   state = {
@@ -14,7 +15,7 @@ export default class App extends Component {
   };
   perPage = 12;
 
-  async componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(_, prevState) {
     const KEY = '30111750-62c4a73e1cd4f265a4d4cd285';
     const { page, request } = this.state;
     const prevRequest = prevState.request;
@@ -55,6 +56,10 @@ export default class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
+  onHandleClose = () => {
+    this.setState({ largeImage: null });
+  };
+
   render() {
     return (
       <div>
@@ -65,7 +70,14 @@ export default class App extends Component {
         />
         {this.state.isLoading && <Loader />}
         {this.state.images.length === this.state.page * this.perPage && (
-          <Button onLoadMore={this.state.onLoadMore} />
+          <Button onLoadMore={this.onLoadMore} />
+        )}
+        {this.state.largeImage && (
+          <ModalWindow
+            onHandleClose={this.onHandleClose}
+            url={this.state.largeImage.url}
+            tags={this.state.largeImage.tags}
+          />
         )}
       </div>
     );
